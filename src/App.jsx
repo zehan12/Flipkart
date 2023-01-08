@@ -7,7 +7,7 @@ function App() {
 
   return (
     <div className="App">
-      <div>
+      <div className='text-red-700 text-6xl ' >
         Flipkart
       </div>
     </div>
