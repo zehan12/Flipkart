@@ -8,43 +8,45 @@ const Footer = () => {
     return (
         <Fragment>
             <footer className="bg-[#172337] text-white py-4 w-full text-center text-sm fixed bottom-0">
-                <div className="flex justify-start gap-10 mx-20 my-7 w-full text-xs leading-[1.5rem]" >
-                    <div className="w-[900px] flex justify-start gap-20 text-left" >
+            //  fixed bottom-0
+
+                <div className="flex justify-start gap-10 px-20 py-10 w-[100%] text-xs leading-[1.5rem]" >
+                    <div className="w-[70%] flex justify-start gap-20 text-left" >
                         <div className="w-40">
                             <h5 className="mb-3 text-xs text-gray-400" >ABOUT</h5>
-                            <p>Contact Us</p>
-                            <p>About us</p>
-                            <p>Careers</p>
-                            <p>Flipkart Stories</p>
-                            <p>Press</p>
-                            <p>Flipkart Wholesale</p>
-                            <p>Corporate Information</p>
+                            <p className="hover:underline cursor-pointer">Contact Us</p >
+                            <p className="hover:underline cursor-pointer">About us</p>
+                            <p className="hover:underline cursor-pointer">Careers</p>
+                            <p className="hover:underline cursor-pointer">Flipkart Stories</p>
+                            <p className="hover:underline cursor-pointer">Press</p>
+                            <p className="hover:underline cursor-pointer">Flipkart Wholesale</p>
+                            <p className="hover:underline cursor-pointer">Corporate Information</p>
                         </div>
 
                         <div className="w-40">
                             <h5 className="mb-3 text-xs text-gray-400" >HELP</h5>
-                            <p>Payments</p>
-                            <p>Shipping</p>
-                            <p>Cancellation & Returns</p>
-                            <p>FAQ</p>
-                            <p>Report Infringement</p>
+                            <p className="hover:underline cursor-pointer">Payments</p>
+                            <p className="hover:underline cursor-pointer">Shipping</p>
+                            <p className="hover:underline cursor-pointer">Cancellation & Returns</p>
+                            <p  className="hover:underline cursor-pointer">FAQ</p>
+                            <p className="hover:underline cursor-pointer">Report Infringement</p>
                         </div>
 
                         <div className="w-40">
                             <h5 className="mb-3 text-xs text-gray-400" >POLICY</h5>
-                            <p>Return Policy</p>
-                            <p>Terms Of Use</p>
-                            <p>Security</p>
-                            <p>Privacy</p>
-                            <p>Sitemap</p>
-                            <p>EPR Complianc</p>
+                            <p className="hover:underline cursor-pointer">Return Policy</p>
+                            <p className="hover:underline cursor-pointer">Terms Of Use</p>
+                            <p className="hover:underline cursor-pointer">Security</p>
+                            <p className="hover:underline cursor-pointer">Privacy</p>
+                            <p className="hover:underline cursor-pointer">Sitemap</p>
+                            <p className="hover:underline cursor-pointer">EPR Complianc</p>
 
                         </div>
                         <div className="w-40">
                             <h5 className="mb-3 text-xs text-gray-400" >SOCIAL</h5>
-                            <p>Facebook</p>
-                            <p>Twiter</p>
-                            <p>YouTube</p>
+                            <p className="hover:underline cursor-pointer">Facebook</p>
+                            <p className="hover:underline cursor-pointer">Twiter</p>
+                            <p className="hover:underline cursor-pointer">YouTube</p>
                         </div>
 
                     </div>
