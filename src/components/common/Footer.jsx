@@ -7,7 +7,7 @@ import { IoMdHelpCircle } from "react-icons/io";
 const Footer = () => {
     return (
         <Fragment>
-            <footer className="bg-[#172337] text-white py-4 w-full text-center text-sm fixed bottom-0">
+            <footer className="bg-[#172337] text-white py-4 w-full text-center text-sm fixed bottom-0 -z-20">
             //  fixed bottom-0
 
                 <div className="flex justify-start gap-10 px-20 py-10 w-[100%] text-xs leading-[1.5rem]" >
@@ -84,10 +84,6 @@ const Footer = () => {
                     <div className="flex items-center gap-2">
                         <BsFillBagFill size={20} color="#FFC800" />
                         <p>Become a Seller</p>
-                    </div>
-                    <div className="flex items-center gap-2">
-                        <MdStars size={20} color="#FFC800" />
-                        <p>Advertise</p>
                     </div>
                     <div className="flex items-center gap-2">
                         <MdStars size={20} color="#FFC800" />
