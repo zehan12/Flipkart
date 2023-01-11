@@ -211,7 +211,7 @@ const ProductListing = () => {
                             {
                                 sizes.map((size) => {
                                     return (<div key={size}
-                                        style={{ border: "1px solid orange", background:activeSize.includes(size) ? "#f0d3b7" : "white" }}
+                                        style={{ border: "1px solid orange", background: activeSize.includes(size) ? "#f0d3b7" : "white" }}
                                         onClick={() => handleSize(size)}
                                         className={`w-8 h-6 text-center text-[14px] rounded cursor-pointer hover:bg-orange-100 `}>{size}</div>)
                                 })
