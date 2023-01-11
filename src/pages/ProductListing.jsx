@@ -32,12 +32,17 @@ const ProductListing = () => {
     const [isGenderOpen, setISGenderOpen] = useState(false);
     const [sortData, setSortData] = useState(Products);
     const [isLoading, setLoading] = useState(false);
+    const [activeSize, setActiveSize] = useState([]);
+
+
 
 
     let sizes = Products.reduce((acc, cv) => {
         acc = acc.concat(cv.availableSizes);
         return acc;
     }, []).filter((v, i, a) => a.indexOf(v) === i);
+
+    let maxPrice = sortData.reduce((acc, cv) => acc += cv.price, 0);
 
 
     const debounce = (func) => {
@@ -94,6 +99,18 @@ const ProductListing = () => {
         handleProductData(option)
     }
 
+
+    const handleSize = (size) => {
+        let arr = [];
+        if (activeSize.includes(size)) {
+            arr = activeSize.filter((v) => v !== size)
+        } else {
+            arr = [...activeSize, size];
+        }
+        setActiveSize(arr);
+        handleProductData()
+    }
+
     const handleProductData = (option) => {
         let sortData = [...Products];
         if (gender !== null) {
@@ -111,7 +128,9 @@ const ProductListing = () => {
             })
         }
 
-        console.log(sortData, "after")
+        if (activeSize.length > 0) {
+            sortData = sortData.filter((product) => product.availableSizes.some((size) => activeSize.includes(size)))
+        }
 
         // console.log(sortData,"data")
         switch (option) {
@@ -178,7 +197,7 @@ const ProductListing = () => {
                     <hr className="w-[0.1] h-[1px] border-none bg-gray-100" />
                     <div className="my-4">
                         <div class="flex items-center gap-3">
-                            <input  type="checkbox"
+                            <input type="checkbox"
                                 //  checked={true}
                                 class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-700 focus:ring-2 dark:bg-gray-600 dark:border-gray-500" />
                             <img className="w-20" src="https://static-assets-web.flixcart.com/fk-p-linchpin-web/fk-cp-zion/img/fa_62673a.png" />
@@ -190,7 +209,12 @@ const ProductListing = () => {
                         <h5 className="font-semibold text-xs my-3" >SIZES</h5>
                         <div className="flex flex-wrap gap-2">
                             {
-                                sizes.map((size) => <div key={size} style={{border:"1px solid orange"}} className="w-8 h-6 text-center text-[14px] rounded cursor-pointer hover:bg-orange-100 ">{size}</div>)
+                                sizes.map((size) => {
+                                    return (<div key={size}
+                                        style={{ border: "1px solid orange", background:activeSize.includes(size) ? "#f0d3b7" : "white" }}
+                                        onClick={() => handleSize(size)}
+                                        className={`w-8 h-6 text-center text-[14px] rounded cursor-pointer hover:bg-orange-100 `}>{size}</div>)
+                                })
                             }
                         </div>
                     </div>

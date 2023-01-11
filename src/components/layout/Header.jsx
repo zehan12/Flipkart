@@ -9,6 +9,15 @@ const Header = () => {
     // const handleHover = ( ) => {
 
     // }
+
+    const loginOptions = [
+        { label: "My Profile", href: "", icon: null },
+        { label: "Flipkart Plus Zone", href: "", icon: null },
+        { label: "Orders", href: `/account/orders`, icon: null },
+        { label: "Wishlist", href: "", icon: null },
+        { label: "Rewards", href: "", icon: null },
+        { label: "Gift Cards", href: "", icon: null },
+    ];
     const moreOptions = [
         {
             name: "Notification Prefrences",
@@ -48,14 +57,15 @@ const Header = () => {
                         <FaSearch size={20} className='absolute top-0 right-4 mt-4 text-blue-500' />
                     </div>
                     <div className='flex items-center gap-10'>
+
                         <div className=" py-1 w-28  mt-2 bg-white font-bold text-blue-500 text-center">
                             Login
                         </div>
                         <div className="text-[#fff] font-bold mt-2">
                             Become a Seller
                         </div>
-                        <div class="flex items-center justify-center cursor-pointer">
 
+                        <div class="flex items-center justify-center cursor-pointer">
                             <div class="relative flex flex-col items-center group">
                                 <div className="text-[#fff] font-bold mt-2">
                                     More
@@ -64,7 +74,7 @@ const Header = () => {
                                     <div class="w-3 h-3 -mb-2 rotate-45 bg-white"></div>
                                     <span class="relative h-full w-48 z-10 p-2 text-xs leading-none bg-white whitespace-no-wrap shadow-lg">
                                         {
-                                            moreOptions.map((o) => <div className="m-3" style={{ borderBottom: "1px solid black" }}>{o.name}</div>)
+                                            moreOptions.map((o) => <div key={o.name} className="m-3" style={{ borderBottom: "1px solid black" }}>{o.name}</div>)
                                         }
                                     </span>
                                 </div>
