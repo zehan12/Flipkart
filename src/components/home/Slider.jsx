@@ -1,4 +1,4 @@
-import React, { Fragment, useState } from 'react';
+import React, { Fragment, useState, useEffect } from 'react';
 import { MdOutlineArrowBackIosNew, MdArrowForwardIos } from 'react-icons/md';
 
 const Slider = () => {
@@ -18,39 +18,48 @@ const Slider = () => {
         {
             name: "aeroplane",
             image: "https://rukminim1.flixcart.com/fk-p-flap/3376/560/image/9a98ec819d2dfacb.jpg?q=50"
+        },
+        {
+            name: "phones",
+            image: "https://rukminim1.flixcart.com/fk-p-flap/3376/560/image/b10b99ad7a473558.jpg?q=50"
+        },
+        {
+            name: "air",
+            image: "https://rukminim1.flixcart.com/fk-p-flap/3376/560/image/5d77ece489257e26.jpg?q=50"
+        },
+        {
+            name: "flight",
+            image: "https://rukminim1.flixcart.com/fk-p-flap/3376/560/image/9ee25e0e7ec416ca.jpg?q=50"
         }
     ]
 
     const [currentIndex, setCurrentIndex] = useState(0);
 
-    const move = ( ) => {
-        if ( currentIndex === 0 || currentIndex <= 1 ) setCurrentIndex(currentIndex+1)
-        if ( currentIndex === 2  ) setCurrentIndex(2);
+
+
+    const prevSlide = () => {
+        console.log("click prev")
+        const isFirstSlide = currentIndex === 0;
+        const newIndex = isFirstSlide ? slides.length - 1 : currentIndex - 1;
+        setCurrentIndex(newIndex);
     }
 
-    // const prevSlide = () => {
-    //     console.log("click prev")
-    //     const isFirstSlide = currentIndex === 0;
-    //     const newIndex = isFirstSlide ? slides.length - 1 : currentIndex - 1;
-    //     setCurrentIndex(newIndex);
-    // }
 
+    const nextSlide = () => {
+        console.log("click next")
+        const isLastSlide = currentIndex === slides.length - 1;
+        const newIndex = isLastSlide ? 0 : currentIndex + 1;
+        setCurrentIndex(newIndex);
+    }
 
-    // const nextSlide = () => {
-    //     console.log("click next")
-    //     const isLastSlide = currentIndex === slides.length - 1;
-    //     const newIndex = isLastSlide ? 0 : currentIndex + 1;
-    //     setCurrentIndex(newIndex);
-    // }
+    useEffect(() => {
+        const timer = setTimeout(() =>  nextSlide(), 1e4)
+        return () => clearTimeout(timer)
+    }, [currentIndex])
 
-    // const goToSlide = (slideIndex) => {
-    //     setCurrentIndex(slideIndex)
-    // }
-
-    console.log(currentIndex)
     return (
         <Fragment>
-            <div className="w-full h-80 bg-[#F1F3F6] m-auto p-4 relative -z-10 mb-40 ">
+            <div className="w-full h-80 bg-[#F1F3F6] m-auto p-4 relative  mb-40 ">
                 <div
                     style={{
                         backgroundImage: `url(${slides[currentIndex].image})`
@@ -59,11 +68,17 @@ const Slider = () => {
                 >
                 </div>
                 <div className="flex">
-                    <button onClick={() => move()} className="flex  justify-center  flex-col absolute top-24 w-12 h-28 pl-2 bg-red-400">
-                        <MdOutlineArrowBackIosNew size={30} />
+                    <button onClick={() => prevSlide()} className="flex  justify-center  flex-col absolute top-24 w-12 h-28 pl-2 bg-white">
+                        <MdOutlineArrowBackIosNew onClick={() => prevSlide()} size={30} />
                     </button>
-                    <button onClick={() => move()} className="flex justify-center   flex-col absolute right-4 top-24 w-12 h-28 pl-2 bg-white">
-                        <MdArrowForwardIos size={30} />
+                    <button onClick={() => {
+                        console.log("event click on next")
+                        nextSlide()
+                    }} className="flex justify-center   flex-col absolute right-4 top-24 w-12 h-28 pl-2 bg-white">
+                        <MdArrowForwardIos onClick={() => {
+                            console.log("event click on next")
+                            nextSlide()
+                        }} size={30} />
                     </button>
                 </div>
             </div>

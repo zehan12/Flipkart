@@ -14,6 +14,8 @@
         "sku": 12064273040195392,
         "style": "Black with custom print",
         "title": "Cat Tee Black T-Shirt",
+        "brand":"Adidas",
+        "assured":true,
         "idealFor":[
             "Men", "Women"
         ]
@@ -31,7 +33,8 @@
         "price": 29.45,
         "sku": 51498472915966370,
         "style": "Front print and paisley print",
-        "title": "Dark Thug Blue-Navy T-Shirt"
+        "title": "Dark Thug Blue-Navy T-Shirt",
+        "brand":"Nike"
     },
     {
         "availableSizes": [

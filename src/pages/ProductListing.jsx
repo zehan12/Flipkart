@@ -3,44 +3,40 @@ import Products from "../data/productList.json";
 import { IoIosArrowUp, IoIosArrowDown } from 'react-icons/io';
 import ProductCard from "../components/productListing/productCard";
 import { useEffect } from "react";
+import Spinner from "../components/common/Spinner";
 
-const Spinner = () => {
-    return (
-        <Fragment>
-            <div class="flex space-x-2">
-                <div aria-label="Loading..." role="status">
-                    <svg class="h-12 w-12 animate-spin" viewBox="3 3 18 18">
-                        <path
-                            class="fill-gray-200"
-                            d="M12 5C8.13401 5 5 8.13401 5 12C5 15.866 8.13401 19 12 19C15.866 19 19 15.866 19 12C19 8.13401 15.866 5 12 5ZM3 12C3 7.02944 7.02944 3 12 3C16.9706 3 21 7.02944 21 12C21 16.9706 16.9706 21 12 21C7.02944 21 3 16.9706 3 12Z"></path>
-                        <path
-                            class="fill-blue-500"
-                            d="M16.9497 7.05015C14.2161 4.31648 9.78392 4.31648 7.05025 7.05015C6.65973 7.44067 6.02656 7.44067 5.63604 7.05015C5.24551 6.65962 5.24551 6.02646 5.63604 5.63593C9.15076 2.12121 14.8492 2.12121 18.364 5.63593C18.7545 6.02646 18.7545 6.65962 18.364 7.05015C17.9734 7.44067 17.3403 7.44067 16.9497 7.05015Z"></path>
-                    </svg>
-                </div>
-            </div>
-        </Fragment>
-    )
-}
+
 
 const ProductListing = () => {
 
 
 
-    const [sortBy, setSortBy] = useState("none");
+    const [sortBy, setSortBy] = useState("all");
     const [gender, setGender] = useState(null);
-    const [isGenderOpen, setISGenderOpen] = useState(false);
+    const [isGenderOpen, setGenderOpen] = useState(false);
+    const [brand, setBrand] = useState(null);
+    const [isBrandOpen, setBrandOpen] = useState(false);
     const [sortData, setSortData] = useState(Products);
     const [isLoading, setLoading] = useState(false);
     const [activeSize, setActiveSize] = useState([]);
+    const [assured, setAssured] = useState(false);
 
 
-
+    const clearAll = () => {
+        sortData([...Products])
+        sortBy("all");
+        gender(null);
+        brand(null);
+        activeSize([])
+    }
 
     let sizes = Products.reduce((acc, cv) => {
         acc = acc.concat(cv.availableSizes);
         return acc;
     }, []).filter((v, i, a) => a.indexOf(v) === i);
+
+    const brands = Products.filter((v) => v.brand).map((v) => v.brand)
+
 
     let maxPrice = sortData.reduce((acc, cv) => acc += cv.price, 0);
 
@@ -82,21 +78,9 @@ const ProductListing = () => {
         else setGender(value)
     }
 
-    useEffect(() => { handleProductData() }, [gender])
-
-    const sortOptions = [
-        { name: "None", value: "none" },
-        { name: "Popularity", value: "popular" },
-        { name: "Price -- Low to High", value: "L2H" },
-        { name: "Price -- High to Low", value: "H2L" },
-        { name: "Newest First", value: "new" }
-
-    ]
-
-    const handleSortOption = (option) => {
-        waitLoading()
-        setSortBy(option)
-        handleProductData(option)
+    const handleBrand = (value) => {
+        if (brand === value) setBrand(null)
+        else setBrand(value)
     }
 
 
@@ -108,31 +92,58 @@ const ProductListing = () => {
             arr = [...activeSize, size];
         }
         setActiveSize(arr);
-        handleProductData()
     }
+
+    useEffect(() => { handleProductData() }, [gender])
+    useEffect(() => { handleProductData() }, [brand])
+    useEffect(() => { handleProductData() }, [assured])
+    useEffect(() => { handleProductData() }, [activeSize])
+
+    const sortOptions = [
+        { name: "All", value: "all" },
+        { name: "Popularity", value: "popular" },
+        { name: "Price -- Low to High", value: "L2H" },
+        { name: "Price -- High to Low", value: "H2L" },
+        { name: "Newest First", value: "new" }
+    ]
+
+    const handleSortOption = (option) => {
+        waitLoading()
+        setSortBy(option)
+        handleProductData(option)
+    }
+
+
 
     const handleProductData = (option) => {
         let sortData = [...Products];
+
+        if (assured) {
+            sortData = sortData
+                .filter((product) => product?.assured);
+            console.log(sortData)
+        }
+
         if (gender !== null) {
-            // sortData.forEach((v)=>{
-            //     console.log(gender,v.idealFor,v.idealFor?.includes(gender),"iterative")
-            // })
             sortData = sortData.filter((product) => {
                 if (product.idealFor?.includes(gender)) {
-                    console.log
                     return product
                 }
-                // else if ( product.idealFor?.includes(genderOptions[0]) || product.idealFor?() ) {
-                //     return product
-                // }
             })
         }
 
-        if (activeSize.length > 0) {
-            sortData = sortData.filter((product) => product.availableSizes.some((size) => activeSize.includes(size)))
+        if (brand !== null) {
+            sortData = sortData
+                .filter((product) => product.brand === brand)
         }
 
-        // console.log(sortData,"data")
+        if (activeSize.length > 0) {
+            sortData = sortData.
+                filter((product) => product.availableSizes
+                    .some((size) => activeSize
+                        .includes(size)))
+        }
+
         switch (option) {
             case "none":
                 setSortData(Products);
@@ -154,10 +165,6 @@ const ProductListing = () => {
         }
     }
 
-    console.log(sortData, "fata")
-
-    // const OptimizedhandleSort = useCallback(debounce(handleSortOption), []);
-
     return (
         <Fragment>
             <section className="bg-[#F1F3F6] flex flex-row">
@@ -174,7 +181,7 @@ const ProductListing = () => {
                     <hr className="w-[0.1] h-[1px] border-none bg-gray-100" />
 
                     <div className="mb-4">
-                        <div onClick={() => setISGenderOpen(!isGenderOpen)} className="flex items-center justify-between">
+                        <div onClick={() => setGenderOpen(!isGenderOpen)} className="flex items-center justify-between">
                             <h5 className="font-semibold text-xs my-3" >GENDER</h5>
                             {isGenderOpen ? <IoIosArrowUp /> : <IoIosArrowDown />}
                         </div>
@@ -198,7 +205,8 @@ const ProductListing = () => {
                     <div className="my-4">
                         <div class="flex items-center gap-3">
                             <input type="checkbox"
-                                //  checked={true}
+                                onChange={() => setAssured(!assured)}
+                                checked={assured}
                                 class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-700 focus:ring-2 dark:bg-gray-600 dark:border-gray-500" />
                             <img className="w-20" src="https://static-assets-web.flixcart.com/fk-p-linchpin-web/fk-cp-zion/img/fa_62673a.png" />
                         </div>
@@ -210,13 +218,40 @@ const ProductListing = () => {
                         <div className="flex flex-wrap gap-2">
                             {
                                 sizes.map((size) => {
-                                    return (<div key={size}
-                                        style={{ border: "1px solid orange", background: activeSize.includes(size) ? "#f0d3b7" : "white" }}
-                                        onClick={() => handleSize(size)}
-                                        className={`w-8 h-6 text-center text-[14px] rounded cursor-pointer hover:bg-orange-100 `}>{size}</div>)
+                                    if (activeSize.includes(size), size)
+                                        return (<div key={size}
+                                            style={{
+                                                border: "1px solid orange", background: activeSize.indexOf(size) !== -1
+                                                    ? "#f0d3b7" : "white"
+                                            }}
+                                            onClick={() => handleSize(size)}
+                                            className={`w-8 h-6 text-center text-[14px] rounded cursor-pointer hover:bg-orange-100 `}>{size}</div>)
                                 })
                             }
                         </div>
+                    </div>
+                    <hr className="w-[0.1] h-[1px] border-none bg-gray-100" />
+
+                    <div className="mb-4">
+                        <div onClick={() => setBrandOpen(!isBrandOpen)} className="flex items-center justify-between">
+                            <h5 className="font-semibold text-xs my-3" >Brand</h5>
+                            {isBrandOpen ? <IoIosArrowUp /> : <IoIosArrowDown />}
+                        </div>
+
+                        {isBrandOpen &&
+                            <div class="flex flex-col justify-center">
+                                {brands.map((brandName) => (
+                                    <div key={brandName} class="flex items-center gap-3">
+                                        <input id="vue-checkbox" type="checkbox" checked={brand === brandName} onChange={() => handleBrand(brandName)} class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-700 focus:ring-2 dark:bg-gray-600 dark:border-gray-500" />
+                                        <label class="form-check-label inline-block text-gray-800">
+                                            {brandName}
+                                        </label>
+                                    </div>
+
+                                ))
+                                }
+                            </div>
+                        }
                     </div>
 
 
@@ -229,7 +264,7 @@ const ProductListing = () => {
                     </div>
                     <div className="m-2">
                         <h5 className="text-xl font-semibold">Clothing and Accessories</h5>
-                        <div className="text-xs font-normal text-gray-500">(Showing products of products)</div>
+                        <div className="text-xs font-normal text-gray-500">{`(Showing ${sortData.length} products of ${Products.length} products)`}</div>
 
                         <div className="flex font-sm items-center gap-8 py-1">
                             <div className="text-sm font-semibold">Sort By</div>
@@ -244,6 +279,9 @@ const ProductListing = () => {
                             ))}
                         </div>
                         <div className="flex flex-wrap gap-5">
+                            {
+                                sortData.length === 0 && <h1>Not result Found</h1>
+                            }
                             {
                                 isLoading ?
                                     <div className="mx-auto w-40 m-40">
