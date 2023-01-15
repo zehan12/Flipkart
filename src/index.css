@@ -71,3 +71,32 @@ button:focus-visible {
     background-color: #f9f9f9;
   }
 } */
+
+
+.slick-arrow.slick-prev,
+.slick-arrow.slick-next {
+  background: rgb(255, 255, 255);
+  width: 47px;
+  height: 104px;
+  display: flex;
+  justify-items: center;
+  align-items: center;
+  z-index: 1;
+}
+
+.slick-prev {
+  left: 0;
+  border-top-right-radius: 7px;
+  border-bottom-right-radius: 7px;
+}
+
+.slick-next {
+  right: 0;
+  border-bottom-left-radius: 7px;
+  border-bottom-right-radius: 7px;
+}
+
+.slick-prev::before,
+.slick-next::before{
+  display: none;
+}

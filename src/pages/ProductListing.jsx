@@ -1,15 +1,27 @@
 import { Fragment, useState, useCallback } from "react";
-import Products from "../data/productList.json";
+import { data } from "../data/products.json";
 import { IoIosArrowUp, IoIosArrowDown } from 'react-icons/io';
-import ProductCard from "../components/productListing/productCard";
 import { useEffect } from "react";
 import Spinner from "../components/common/Spinner";
+import Card from "../components/productListing/Card";
 
 
-
+const Products = data.products
 const ProductListing = () => {
 
+    const sortOptions = [
+        { name: "All", value: "all" },
+        { name: "Popularity", value: "popular" },
+        { name: "Price -- Low to High", value: "L2H" },
+        { name: "Price -- High to Low", value: "H2L" },
+        { name: "Newest First", value: "new" }
+    ]
 
+
+    const genderOptions = Products.reduce((acc, cv) => {
+        acc = acc.concat(cv.idealFor);
+        return acc;
+    }, []).filter((v, i, a) => a.indexOf(v) === i);
 
     const [sortBy, setSortBy] = useState("all");
     const [gender, setGender] = useState(null);
@@ -35,43 +47,16 @@ const ProductListing = () => {
         return acc;
     }, []).filter((v, i, a) => a.indexOf(v) === i);
 
-    const brands = Products.filter((v) => v.brand).map((v) => v.brand)
+    const brands = Products.filter((v) => v.brand).map((v) => v.brand).filter((v, i, a) => a.indexOf(v) === i);
 
 
     let maxPrice = sortData.reduce((acc, cv) => acc += cv.price, 0);
-
-
-    const debounce = (func) => {
-        let timer;
-        return function (...args) {
-            const context = this;
-            if (timer) clearTimeout(timer);
-            timer = setTimeout(() => {
-                timer = null;
-                func.apply(context, args);
-            }, 500);
-        };
-    };
 
     const waitLoading = () => {
         setLoading(true)
         setTimeout(() => { setLoading(false) }, 500);
     }
 
-    const genderOptions = [
-        "Men",
-        "Women",
-        "Men & Women",
-        "Boys",
-        "Girls",
-        "Boys & Girls",
-        "Unisex",
-        "Baby Girls",
-        "Baby Boys & Baby Girls",
-        "Baby Boys",
-        "Couple",
-        "Baby Boys Baby Girls"
-    ]
 
     const handleGender = (value) => {
         if (gender === value) setGender(null)
@@ -99,13 +84,7 @@ const ProductListing = () => {
     useEffect(() => { handleProductData() }, [assured])
     useEffect(() => { handleProductData() }, [activeSize])
 
-    const sortOptions = [
-        { name: "All", value: "all" },
-        { name: "Popularity", value: "popular" },
-        { name: "Price -- Low to High", value: "L2H" },
-        { name: "Price -- High to Low", value: "H2L" },
-        { name: "Newest First", value: "new" }
-    ]
+
 
     const handleSortOption = (option) => {
         waitLoading()
@@ -149,7 +128,7 @@ const ProductListing = () => {
                 setSortData(Products);
                 break;
             case "popular":
-                let popular = Products.filter((product) => product.price > 9);
+                let popular = sortData.filter((product) => product.price > 9);
                 setSortData([...popular]);
                 break;
             case "H2L":
@@ -278,7 +257,7 @@ const ProductListing = () => {
                                 </div>
                             ))}
                         </div>
-                        <div className="flex flex-wrap gap-5">
+                        <div className="flex flex-wrap gap-1 justify-evenly item-start">
                             {
                                 sortData.length === 0 && <h1>Not result Found</h1>
                             }
@@ -289,10 +268,9 @@ const ProductListing = () => {
                                     </div> :
                                     sortData.map((product) => (
 
-                                        <div key={product.id} className="w-80  rounded-md shadow-md dark:bg-gray-900 dark:text-gray-100">
-                                            <ProductCard title={product.title}
-                                                // styles={product.style}
-                                                price={product.price} />
+                                        <div key={product.id} className="flex ">
+                                            <Card product={product} />
+                                        
                                         </div>
                                     ))
                             }

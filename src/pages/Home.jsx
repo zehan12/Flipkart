@@ -1,30 +1,17 @@
-import { Fragment } from "react"
+import { Fragment, useState } from "react"
 import HomeNav from "../components/home/HomeNav";
+import ProductDetail from "../pages/ProductDetail";
+import ProductRow from "../components/home/ProductRow";
 import Slider from "../components/home/Slider";
-import { data } from "../static/json/products.json";
-
-
-const { products } = data;
-
-const photo = "../static/products"
-
-
-console.log(photo)
+import { data } from "../data/products.json";
 
 const Home = () => {
+    const { products } = data;
     return (
         <Fragment>
-            <h1 className="bg-red-600">Home</h1>
             <HomeNav />
             <Slider />
-            {
-                products.map((product) => {
-                    return <picture>
-                        <img src={`../static/products/${product.sku}-1-product.webp`} />
-                    </picture>
-                })
-            }
-
+            <ProductRow products={products} />
         </Fragment>
     )
 }

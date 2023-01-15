@@ -59,7 +59,7 @@ const Slider = () => {
 
     return (
         <Fragment>
-            <div className="w-full h-80 bg-[#F1F3F6] m-auto p-4 relative  mb-40 ">
+            <div className="w-full h-80 bg-[#F1F3F6] m-auto p-4 relative mb-20">
                 <div
                     style={{
                         backgroundImage: `url(${slides[currentIndex].image})`

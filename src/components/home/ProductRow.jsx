@@ -1,135 +1,49 @@
-const Carousel = () => {
-    const maxScrollWidth = useRef(0);
-    const [currentIndex, setCurrentIndex] = useState(0);
-    const carousel = useRef(null);
+import { Fragment } from "react";
+import Slider from "react-slick";
+import "slick-carousel/slick/slick.css";
+import "slick-carousel/slick/slick-theme.css";
+import { MdOutlineArrowBackIosNew, MdArrowForwardIos } from 'react-icons/md';
+import ProductCard from "./ProductCard";
+import { Link } from "react-router-dom";
 
-    const movePrev = () => {
-        if (currentIndex > 0) {
-            setCurrentIndex((prevState) => prevState - 1);
-        }
-    };
+const ProductRow = ({ products }) => {
 
-    const moveNext = () => {
-        if (
-            carousel.current !== null &&
-            carousel.current.offsetWidth * currentIndex <= maxScrollWidth.current
-        ) {
-            setCurrentIndex((prevState) => prevState + 1);
-        }
-    };
-
-    const isDisabled = (direction) => {
-        if (direction === 'prev') {
-            return currentIndex <= 0;
-        }
-
-        if (direction === 'next' && carousel.current !== null) {
-            return (
-                carousel.current.offsetWidth * currentIndex >= maxScrollWidth.current
-            );
-        }
-
-        return false;
-    };
-
-    useEffect(() => {
-        if (carousel !== null && carousel.current !== null) {
-            carousel.current.scrollLeft = carousel.current.offsetWidth * currentIndex;
-        }
-    }, [currentIndex]);
-
-    useEffect(() => {
-        maxScrollWidth.current = carousel.current
-            ? carousel.current.scrollWidth - carousel.current.offsetWidth
-            : 0;
-    }, []);
+    const PreviousBtn = (props) => {
+        const { className, onClick } = props
+        return (
+            <div className={className} onClick={onClick}>
+                <MdOutlineArrowBackIosNew size={50} color="black" />
+            </div>
+        )
+    }
+    const NextBtn = (props) => {
+        const { className, onClick } = props
+        return (
+            <div className={className} onClick={onClick}>
+                <MdArrowForwardIos size={50} color="black" />
+            </div>
+        )
+    }
 
     return (
-        <div className="carousel my-12 mx-auto">
-            <h2 className="text-4xl leading-8 font-semibold mb-12 text-slate-700">
-                Our epic carousel
-            </h2>
-            <div className="relative overflow-hidden">
-                <div className="flex justify-between absolute top left w-full h-full">
-                    <button
-                        onClick={movePrev}
-                        className="hover:bg-blue-900/75 text-white w-10 h-full text-center opacity-75 hover:opacity-100 disabled:opacity-25 disabled:cursor-not-allowed z-10 p-0 m-0 transition-all ease-in-out duration-300"
-                        disabled={isDisabled('prev')}
-                    >
-                        <svg
-                            xmlns="http://www.w3.org/2000/svg"
-                            className="h-12 w-20 -ml-5"
-                            fill="none"
-                            viewBox="0 0 24 24"
-                            stroke="currentColor"
-                            strokeWidth={2}
-                        >
-                            <path
-                                strokeLinecap="round"
-                                strokeLinejoin="round"
-                                d="M15 19l-7-7 7-7"
-                            />
-                        </svg>
-                        <span className="sr-only">Prev</span>
-                    </button>
-                    <button
-                        onClick={moveNext}
-                        className="hover:bg-blue-900/75 text-white w-10 h-full text-center opacity-75 hover:opacity-100 disabled:opacity-25 disabled:cursor-not-allowed z-10 p-0 m-0 transition-all ease-in-out duration-300"
-                        disabled={isDisabled('next')}
-                    >
-                        <svg
-                            xmlns="http://www.w3.org/2000/svg"
-                            className="h-12 w-20 -ml-5"
-                            fill="none"
-                            viewBox="0 0 24 24"
-                            stroke="currentColor"
-                            strokeWidth={2}
-                        >
-                            <path
-                                strokeLinecap="round"
-                                strokeLinejoin="round"
-                                d="M9 5l7 7-7 7"
-                            />
-                        </svg>
-                        <span className="sr-only">Next</span>
-                    </button>
+        <Fragment>
+            <div className="" style={{ margin: "30px" }}>
+                <div className="flex justify-between items-center p-5">
+                    <h4 className="text-3xl font-semibold">Clothing and Accessories</h4>
+                    <Link to="/clothing-and-accessories" className="uppercase bg-[#2874F0] font-semibold text-white h-8 w-24 text-center text-sm pt-[5px]">view all</Link>
                 </div>
-                <div
-                    ref={carousel}
-                    className="carousel-container relative flex gap-1 overflow-hidden scroll-smooth snap-x snap-mandatory touch-pan-x z-0"
+                <Slider
+                    autoplay
+                    autoplaySpeed={2000}
+                    infinite
+                    prevArrow={<PreviousBtn />}
+                    nextArrow={<NextBtn />}
+                    slidesToShow={5}
                 >
-                    {data.resources.map((resource, index) => {
-                        return (
-                            <div
-                                key={index}
-                                className="carousel-item text-center relative w-64 h-64 snap-start"
-                            >
-                                <a
-                                    href={resource.link}
-                                    className="h-full w-full aspect-square block bg-origin-padding bg-left-top bg-cover bg-no-repeat z-0"
-                                    style={{ backgroundImage: `url(${resource.imageUrl || ''})` }}
-                                >
-                                    <img
-                                        src={resource.imageUrl || ''}
-                                        alt={resource.title}
-                                        className="w-full aspect-square hidden"
-                                    />
-                                </a>
-                                <a
-                                    href={resource.link}
-                                    className="h-full w-full aspect-square block absolute top-0 left-0 transition-opacity duration-300 opacity-0 hover:opacity-100 bg-blue-800/75 z-10"
-                                >
-                                    <h3 className="text-white py-6 px-3 mx-auto text-xl">
-                                        {resource.title}
-                                    </h3>
-                                </a>
-                            </div>
-                        );
-                    })}
-                </div>
+                    {products.map((product) => (<ProductCard key={product.sku} product={product} />))}
+                </Slider>
             </div>
-        </div>
-    );
-};
+        </Fragment >)
+}
 
-export default Carousel;
+export default ProductRow;
