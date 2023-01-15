@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { useLocation } from "react-router-dom";
 import Spinner from "../components/common/Spinner";
-import Zoom from 'react-img-zoom'
+// import Zoom from 'react-img-zoom'
 
 
 
@@ -24,13 +24,13 @@ const ProductDetail = () => {
                         {/* <img alt="ecommerce" class="lg:w-1/2 w-full object-cover object-center rounded border border-gray-200" src="https://i.postimg.cc/pL6j9MSr/bot.jpg" /> */}
 
                         <div className="cursor-zoom-in">
-                            <Zoom
+                            {/* <Zoom
 
                                 img="https://i.postimg.cc/pL6j9MSr/bot.jpg"
                                 zoomScale={3}
                                 width={600}
                                 height={600}
-                            />
+                            /> */}
 
                         </div>
                         <div class="lg:w-1/2 w-full lg:pl-10 lg:py-6 mt-6 lg:mt-0">
