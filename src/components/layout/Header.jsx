@@ -36,7 +36,7 @@ const Header = () => {
     ]
     return (
         <Fragment>
-            <header className='bg-blue-500 fixed top-0 w-full z-50'>
+            <header className='bg-blue-500 fixed top-0 w-[100%] z-40'>
                 <div className='container mx-auto px-4 py-4 flex items-center justify-start gap-5'>
 
                     <div className='flex flex-col items-center ml-28'>

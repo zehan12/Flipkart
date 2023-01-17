@@ -72,6 +72,14 @@ button:focus-visible {
   }
 } */
 
+/* * {
+  border: 1ox solid blueviolet;
+  outline: 2px solid greenyellow;
+} */
+
+body {
+  overflow-x: hidden;
+}
 
 .slick-arrow.slick-prev,
 .slick-arrow.slick-next {

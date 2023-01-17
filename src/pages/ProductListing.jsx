@@ -34,12 +34,12 @@ const ProductListing = () => {
     const [assured, setAssured] = useState(false);
 
 
-    const clearAll = () => {
-        sortData([...Products])
-        sortBy("all");
-        gender(null);
-        brand(null);
-        activeSize([])
+    const clear = () => {
+        setSortData([...Products])
+        setSortBy("all");
+        setGender(null);
+        setBrand(null);
+        setActiveSize([])
     }
 
     let sizes = Products.reduce((acc, cv) => {
@@ -128,7 +128,7 @@ const ProductListing = () => {
                 setSortData(Products);
                 break;
             case "popular":
-                let popular = sortData.filter((product) => product.price > 9);
+                let popular = sortData.sort((a, b) => parseInt(b.rating) - parseInt(a.rating));
                 setSortData([...popular]);
                 break;
             case "H2L":
@@ -144,13 +144,15 @@ const ProductListing = () => {
         }
     }
 
+
+
     return (
         <Fragment>
             <section className="bg-[#F1F3F6] flex flex-row">
                 <aside className="bg-white  w-[20%] h-full m-2 px-4">
                     <div className="flex justify-between py-4">
                         <h4 className="font-semibold text-xl">Filters</h4>
-                        <button className="uppercase text-xs font-semibold text-blue-500">clear all</button>
+                        <button onClick={()=>clear()} className="uppercase text-xs font-semibold text-blue-500">clear all</button>
                     </div>
                     <hr className="w-[0.1] h-[1px] border-none bg-gray-100" />
                     <div className="py-4">
@@ -270,7 +272,7 @@ const ProductListing = () => {
 
                                         <div key={product.id} className="flex ">
                                             <Card product={product} />
-                                        
+
                                         </div>
                                     ))
                             }
