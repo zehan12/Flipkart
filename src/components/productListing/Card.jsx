@@ -19,8 +19,6 @@ const Card = ({ product }) => {
     const ratingRemaing = 5 - rating;
 
     const [image, setImage] = useState(img[0])
-    const [index, setIndex] = useState(0);
-    const [show, setShow] = useState(false);
     const imgNo = image.split("-")[1] 
 
     return (
